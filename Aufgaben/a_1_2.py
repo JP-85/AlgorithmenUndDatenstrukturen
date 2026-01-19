@@ -11,6 +11,7 @@ import numpy as np
 import numpy.typing as npt
 import matplotlib.pyplot as plt
 
+
 def measure_runtime(func: Callable, *args, **kwargs) -> Tuple[Any, float]:
     """
     Führt eine Funktion aus und misst ihre Laufzeit.
@@ -52,11 +53,11 @@ def bubble_sort(sort_array: npt.NDArray) -> npt.NDArray:
 
 
 def plot_runtime_comparison(
-    times_list: Sequence[float],
-    length: Sequence[int],
-    coef: np.ndarray,
-    intercept: float,
-    degree: int
+        times_list: Sequence[float],
+        length: Sequence[int],
+        coef: np.ndarray,
+        intercept: float,
+        degree: int
 ) -> None:
     """
     Plottet gemessene Laufzeiten und die zugehörige Regressionsfunktion.
@@ -91,8 +92,7 @@ def plot_runtime_comparison(
     plt.show()
 
 
-
-def evaluate_polynomial(x: np.ndarray, coef: np.ndarray, intercept: float) -> np.ndarray:
+def evaluate_polynomial(x: npt.NDArray, coef: npt.NDArray, intercept: float) -> np.ndarray:
     """
     Wertet ein Polynom der Form
     a_n x^n + ... + a_1 x + b
@@ -105,13 +105,13 @@ def evaluate_polynomial(x: np.ndarray, coef: np.ndarray, intercept: float) -> np
     """
     y = np.zeros_like(x, dtype=float)
     for power, a in enumerate(coef, start=1):
-        y += a * x**power
+        y += a * x ** power
     return y + intercept
 
 
 def fit_runtime_polynomial(
-        x: list,
-        y: list,
+        x: Sequence[int],
+        y: Sequence[float],
         degree: int
 ) -> Tuple[np.ndarray, float]:
     """
@@ -147,18 +147,17 @@ if __name__ == '__main__':
     n = [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000]
     ts = []
     for size in n:
-        arr = np.random.randint(1, size * 10, size=size)
+        arr = np.random.uniform(1, size * 10 + 1, size=size)
         sorted_arr, t = measure_runtime(bubble_sort, arr)
         ts.append(t)
 
-    coef, intercept = fit_runtime_polynomial(n, ts, degree=2)
-    print(coef, intercept)
+    coef_, intercept_ = fit_runtime_polynomial(n, ts, degree=2)
+    print(coef_, intercept_)
 
     plot_runtime_comparison(
         times_list=ts,
         length=n,
-        coef=coef,
-        intercept=intercept,
+        coef=coef_,
+        intercept=intercept_,
         degree=2
     )
-
