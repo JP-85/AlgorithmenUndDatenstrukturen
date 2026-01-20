@@ -32,12 +32,6 @@ Stelle sicher, dass Git installiert ist (siehe Voraussetzungen).
 Repository klonen:
 
 ```powershell
-git clone <GITHUB-REPOSITORY-URL>
-```
-
-Beispiel:
-
-```powershell
 git clone https://github.com/JP-85/AlgorithmenUndDatenstrukturen.git
 ```
 
@@ -66,10 +60,10 @@ uv sync
 
 ## Python-Dateien ausführen
 
-Eine Python-Datei (z. B. `main.py`) kann wie folgt gestartet werden:
+Eine Python-Datei kann wie folgt gestartet werden:
 
 ```powershell
-uv run python main.py
+uv run python <dateiname>.py
 ```
 
 Allgemein:
