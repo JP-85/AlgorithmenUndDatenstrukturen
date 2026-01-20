@@ -80,7 +80,7 @@ def plot_runtime_comparison(
     plt.scatter(x, y, label="Messdaten")
 
     # Fit-Kurve
-    plt.plot(x_fit, y_fit, label=f"Polynom-Fit (Grad {degree})")
+    plt.plot(x_fit, y_fit, label=f"Polynom-Fit (Grad {degree}): {create_formular(coef, intercept)}")
 
     plt.title("Laufzeitvergleich Bubblesort")
     plt.xlabel("Eingabegröße n")
@@ -100,7 +100,7 @@ def evaluate_polynomial(x: npt.NDArray, coef: npt.NDArray, intercept: float) -> 
 
     :param x: x-Werte
     :param coef: Koeffizienten [a1, a2, ..., an]
-    :param intercept: Bias b
+    :param intercept: Schnittpunkt mit der y-Achse
     :return: y-Werte
     """
     y = np.zeros_like(x, dtype=float)
@@ -143,6 +143,29 @@ def fit_runtime_polynomial(
     return model.coef_, model.intercept_
 
 
+def hoch(exponent):
+    superscript = str.maketrans("0123456789-", "⁰¹²³⁴⁵⁶⁷⁸⁹⁻")
+    return str(exponent).translate(superscript)
+
+
+def create_formular(coef: npt.NDArray, intercept: float) -> str:
+    """
+    Erstellt die binomische Formel anhand der gegebenen Koeffizienten und des Intercepts.
+
+    :param coef: Die Koeffizienten
+    :param intercept: Schnittpunkt mit der y-Achse
+    :return: String mit der Formel
+    """
+
+    formular = ""
+    if coef.size > 1:
+        for i, c in enumerate(coef[:-1]):
+            formular += f"{coef[i]:.2e}x{hoch(coef.size - i)} + "
+    formular += f"{coef[coef.size - 1]:.2e}x + {intercept:.2e}"
+
+    return formular
+
+
 if __name__ == '__main__':
     n = [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000]
     ts = []
@@ -152,7 +175,9 @@ if __name__ == '__main__':
         ts.append(t)
 
     coef_, intercept_ = fit_runtime_polynomial(n, ts, degree=2)
-    print(coef_, intercept_)
+
+    print("Annäherungsformel:")
+    print(create_formular(coef_, intercept_))
 
     plot_runtime_comparison(
         times_list=ts,

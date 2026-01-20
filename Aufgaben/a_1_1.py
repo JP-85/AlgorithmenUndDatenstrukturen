@@ -24,7 +24,7 @@ def fib_rek(n):
     :param n: Index der zu berechnenden Fibonacci-Zahl
     :return: n-te Fibonacci-Zahl
     """
-    if n > 2:
+    if n >= 2:
         f = fib_rek(n - 1) + fib_rek(n - 2)
     elif n == 0:
         return 0
@@ -116,6 +116,10 @@ def measure_runtime(func: Callable, *args, **kwargs) -> Tuple[Any, float]:
 
 if __name__ == "__main__":
     n_max = 35
+
+    print(fib(n_max))
+    print(fib_rek(n_max))
+    print()
 
     fib_nums = []
     fib_nums_runtime = []
