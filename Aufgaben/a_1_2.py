@@ -53,11 +53,11 @@ def bubble_sort(sort_array: npt.NDArray) -> npt.NDArray:
 
 
 def plot_runtime_comparison(
-        times_list: Sequence[float],
-        length: Sequence[int],
-        coef: np.ndarray,
-        intercept: float,
-        degree: int
+    times_list: Sequence[float],
+    length: Sequence[int],
+    coef: np.ndarray,
+    intercept: float,
+    degree: int,
 ) -> None:
     """
     Plottet gemessene Laufzeiten und die zugehörige Regressionsfunktion.
@@ -80,7 +80,11 @@ def plot_runtime_comparison(
     plt.scatter(x, y, label="Messdaten")
 
     # Fit-Kurve
-    plt.plot(x_fit, y_fit, label=f"Polynom-Fit (Grad {degree}): {create_formular(coef, intercept)}")
+    plt.plot(
+        x_fit,
+        y_fit,
+        label=f"Polynom-Fit (Grad {degree}): {create_formular(coef, intercept)}",
+    )
 
     plt.title("Laufzeitvergleich Bubblesort")
     plt.xlabel("Eingabegröße n")
@@ -92,7 +96,9 @@ def plot_runtime_comparison(
     plt.show()
 
 
-def evaluate_polynomial(x: npt.NDArray, coef: npt.NDArray, intercept: float) -> np.ndarray:
+def evaluate_polynomial(
+    x: npt.NDArray, coef: npt.NDArray, intercept: float
+) -> np.ndarray:
     """
     Wertet ein Polynom der Form
     a_n x^n + ... + a_1 x + b
@@ -105,14 +111,12 @@ def evaluate_polynomial(x: npt.NDArray, coef: npt.NDArray, intercept: float) -> 
     """
     y = np.zeros_like(x, dtype=float)
     for power, a in enumerate(coef, start=1):
-        y += a * x ** power
+        y += a * x**power
     return y + intercept
 
 
 def fit_runtime_polynomial(
-        x: Sequence[int],
-        y: Sequence[float],
-        degree: int
+    x: Sequence[int], y: Sequence[float], degree: int
 ) -> Tuple[np.ndarray, float]:
     """
     Approximiert Laufzeitdaten mit einem Polynom beliebigen Grades.
@@ -166,7 +170,7 @@ def create_formular(coef: npt.NDArray, intercept: float) -> str:
     return formular
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     n = [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000]
     ts = []
     for size in n:
@@ -180,9 +184,5 @@ if __name__ == '__main__':
     print(create_formular(coef_, intercept_))
 
     plot_runtime_comparison(
-        times_list=ts,
-        length=n,
-        coef=coef_,
-        intercept=intercept_,
-        degree=2
+        times_list=ts, length=n, coef=coef_, intercept=intercept_, degree=2
     )

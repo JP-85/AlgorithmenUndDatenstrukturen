@@ -4,17 +4,20 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 
+
 def bubblesort(arr):
     n = len(arr)
     i = 0
 
     for i in range(n):
         for j in range(0, n - i - 1):
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+
 
 def quadratische_funktion(x, a):
     return a * (x**2)
+
 
 laengen = [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000]
 zeiten = []
@@ -39,7 +42,9 @@ y_fit = quadratische_funktion(x_fit, faktor_a)
 
 plt.figure(figsize=(10, 6))
 plt.scatter(laengen, zeiten, color="blue", label="Messdaten")
-plt.plot(x_fit, y_fit, color="red", linestyle="--", label=f"Fit: T(n) = {faktor_a:.2e} * n²")
+plt.plot(
+    x_fit, y_fit, color="red", linestyle="--", label=f"Fit: T(n) = {faktor_a:.2e} * n²"
+)
 
 plt.xlabel("Anzahl der Elemente n")
 plt.ylabel("Zeit in Sekunden")
@@ -48,8 +53,3 @@ plt.legend()
 plt.grid(True)
 
 plt.show()
-
-
-
-
-

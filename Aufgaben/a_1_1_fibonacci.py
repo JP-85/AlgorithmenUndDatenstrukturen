@@ -1,6 +1,7 @@
 import time
 import matplotlib.pyplot as plt
 
+
 def fib_rekursiv(n):
     if n == 0:
         return 0
@@ -9,9 +10,12 @@ def fib_rekursiv(n):
     else:
         return fib_rekursiv(n - 1) + fib_rekursiv(n - 2)
 
+
 def fib_iterativ(n):
-    if n == 0: return 0
-    if n == 1: return 1
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
 
     a = 0
     b = 1
@@ -22,6 +26,7 @@ def fib_iterativ(n):
         b = res
     return b
 
+
 n_werte = []
 zeiten_rekursiv = []
 zeiten_iterativ = []
@@ -31,25 +36,25 @@ print("Berechnung läuft... in der Ruhe liegt die Kraft...")
 for n in range(36):
     n_werte.append(n)
 
-    #Messung Rekursiv
+    # Messung Rekursiv
     start_zeit = time.time()
     fib_rekursiv(n)
     end_zeit = time.time()
     zeiten_rekursiv.append(end_zeit - start_zeit)
 
-    #Messung Iterativ
+    # Messung Iterativ
     start_zeit = time.time()
     fib_iterativ(n)
     end_zeit = time.time()
     zeiten_iterativ.append(end_zeit - start_zeit)
 
 
-plt.plot(n_werte, zeiten_rekursiv, label="Rekursiv", color='red')
-plt.plot(n_werte, zeiten_iterativ, label='Iterativ', color='blue')
+plt.plot(n_werte, zeiten_rekursiv, label="Rekursiv", color="red")
+plt.plot(n_werte, zeiten_iterativ, label="Iterativ", color="blue")
 
-plt.xlabel('Fibonacci-Zahl n')
-plt.ylabel('Zeit in Sekunden')
-plt.title('Vergleich: Rekursiv vs. Iterativ')
+plt.xlabel("Fibonacci-Zahl n")
+plt.ylabel("Zeit in Sekunden")
+plt.title("Vergleich: Rekursiv vs. Iterativ")
 plt.legend()
 plt.grid(True)
 
