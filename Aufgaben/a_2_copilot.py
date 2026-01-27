@@ -61,12 +61,12 @@ def print_tree(arr: npt.NDArray) -> None:
     height = int(math.floor(math.log2(n))) + 1
     node_width = max(len(s) for s in values) + 2
 
-    total_slots = 2 ** height
+    total_slots = 2**height
     total_width = total_slots * node_width
 
     level_info = []
     for level in range(height):
-        slots = 2 ** level
+        slots = 2**level
         spacing = total_width // slots
         offset = spacing // 2 - node_width // 2
         level_info.append((spacing, offset))
@@ -76,7 +76,7 @@ def print_tree(arr: npt.NDArray) -> None:
         return offset_center + idx_in_level * spacing_center + node_width // 2
 
     for level in range(height):
-        start = 2 ** level - 1
+        start = 2**level - 1
         end = min(2 ** (level + 1) - 1, n)
         count = max(0, end - start)
         if count == 0:
@@ -103,7 +103,7 @@ def print_tree(arr: npt.NDArray) -> None:
                     conn[parent_center] = "|"
                 left_child = 2 * parent_idx + 1
                 right_child = 2 * parent_idx + 2
-                child_i_base = (2 ** (level + 1) - 1)
+                child_i_base = 2 ** (level + 1) - 1
                 for child in (left_child, right_child):
                     if child < n:
                         child_i = child - child_i_base
@@ -150,5 +150,5 @@ def main():
     print_tree(sorted_asc)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
