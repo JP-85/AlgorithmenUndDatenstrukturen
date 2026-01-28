@@ -1,5 +1,9 @@
-# python
-import heapq
+# Aufgabe Heapsort (RL)
+# Folgende Aufgabe soll mit einem Python Programm gelöst werden:
+# Erzeugen Sie einen Array mit n=20 zufällig ausgewählten natürlichen Schlüsseln. Bringen Sie ihn
+# auf Heapstruktur. Davon ausgehend bilden Sie einen sortierten Array – egal von klein nach groß
+# oder von groß nach klein.
+
 import numpy as np
 import numpy.typing as npt
 import math
@@ -123,16 +127,6 @@ def main():
     np.random.shuffle(keys)
 
     print("Unsortiertes Array:", keys)
-
-    # show max-heap (use negation and heapq.heapify)
-    neg = [-x for x in keys.tolist()]
-    heapq.heapify(neg)
-    print("Heapstruktur (Max-Heap):", [-x for x in neg])
-
-    # show min-heap
-    keys_list_min = keys.tolist()
-    heapq.heapify(keys_list_min)
-    print("Heapstruktur (Min-Heap):", keys_list_min)
 
     # heapsort: pass copies to avoid modifying original if needed
     sorted_desc = heap_sort(keys.copy(), True)
