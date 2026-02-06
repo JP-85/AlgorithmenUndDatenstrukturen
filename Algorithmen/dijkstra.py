@@ -12,6 +12,7 @@ from typing import Dict, List, Optional, Tuple
 # Domain: Node / Edge / Graph
 # -----------------------------
 
+
 @dataclass(frozen=True)
 class Node:
     name: str
@@ -30,7 +31,9 @@ class Edge:
 
     def __post_init__(self) -> None:
         if self.weight < 0:
-            raise ValueError("Dijkstra funktioniert nicht mit negativen Kantengewichten.")
+            raise ValueError(
+                "Dijkstra funktioniert nicht mit negativen Kantengewichten."
+            )
 
 
 class Graph:
@@ -41,6 +44,7 @@ class Graph:
       - walk(start, end) -> (path_nodes, distance)
       - draw(canvas, highlight_path)
     """
+
     def __init__(self) -> None:
         self._nodes: Dict[str, Node] = {}
         self._edges: List[Edge] = []
@@ -120,7 +124,9 @@ class Graph:
     # -------- drawing helpers --------
 
     @staticmethod
-    def _shorten_line(ax: float, ay: float, bx: float, by: float, r: float) -> Tuple[float, float, float, float]:
+    def _shorten_line(
+        ax: float, ay: float, bx: float, by: float, r: float
+    ) -> Tuple[float, float, float, float]:
         """
         Kürzt eine Linie A->B so, dass sie nicht in die Node-Kreise reinläuft:
           Start = A + r*unit
@@ -135,7 +141,13 @@ class Graph:
         uy = dy / length
         return ax + ux * r, ay + uy * r, bx - ux * r, by - uy * r
 
-    def draw(self, canvas: tk.Canvas, highlight_path: Optional[List[Node]] = None, *, node_r: int = 18) -> None:
+    def draw(
+        self,
+        canvas: tk.Canvas,
+        highlight_path: Optional[List[Node]] = None,
+        *,
+        node_r: int = 18,
+    ) -> None:
         canvas.delete("all")
 
         # Highlight-Kanten (gerichtet!)
@@ -152,20 +164,27 @@ class Graph:
             width = 5 if is_hl else 2
             color = "blue" if is_hl else "gray30"
 
-            x1, y1, x2, y2 = self._shorten_line(e.src.x, e.src.y, e.dst.x, e.dst.y, node_r)
+            x1, y1, x2, y2 = self._shorten_line(
+                e.src.x, e.src.y, e.dst.x, e.dst.y, node_r
+            )
 
             canvas.create_line(
-                x1, y1, x2, y2,
-                arrow="last",                 # <= wichtig: Pfeil
-                arrowshape=(18, 22, 8),       # <= sichtbare Spitze
+                x1,
+                y1,
+                x2,
+                y2,
+                arrow="last",  # <= wichtig: Pfeil
+                arrowshape=(18, 22, 8),  # <= sichtbare Spitze
                 fill=color,
-                width=width
+                width=width,
             )
 
             # Gewicht mittig (auf gekürzter Linie)
             mx = (x1 + x2) / 2
             my = (y1 + y2) / 2
-            canvas.create_rectangle(mx - 14, my - 11, mx + 14, my + 11, outline="", fill="white")
+            canvas.create_rectangle(
+                mx - 14, my - 11, mx + 14, my + 11, outline="", fill="white"
+            )
             canvas.create_text(mx, my, text=str(e.weight), font=("Arial", 10))
 
         # Nodes danach (liegen oben)
@@ -175,14 +194,22 @@ class Graph:
             outline = "black"
             w = 3 if is_hl else 2
 
-            canvas.create_oval(n.x - node_r, n.y - node_r, n.x + node_r, n.y + node_r,
-                               fill=fill, outline=outline, width=w)
+            canvas.create_oval(
+                n.x - node_r,
+                n.y - node_r,
+                n.x + node_r,
+                n.y + node_r,
+                fill=fill,
+                outline=outline,
+                width=w,
+            )
             canvas.create_text(n.x, n.y, text=n.name, font=("Arial", 12, "bold"))
 
 
 # -----------------------------
 # UI: Tkinter App
 # -----------------------------
+
 
 class GraphApp(tk.Tk):
     def __init__(self, graph: Graph) -> None:
@@ -209,7 +236,9 @@ class GraphApp(tk.Tk):
         self.end_entry.pack(side="left", padx=(5, 15))
 
         tk.Button(row, text="Berechnen", command=self.on_run).pack(side="left")
-        tk.Button(row, text="Reset", command=self.on_reset).pack(side="left", padx=(10, 0))
+        tk.Button(row, text="Reset", command=self.on_reset).pack(
+            side="left", padx=(10, 0)
+        )
 
         self.output = tk.Text(right, height=22, width=34, wrap="word")
         self.output.pack(fill="both", expand=True, pady=(10, 0))
@@ -230,7 +259,9 @@ class GraphApp(tk.Tk):
 
             self.output.insert("end", f"Start: {start}\nZiel:  {end}\n\n")
             self.output.insert("end", f"Kürzeste Distanz: {dist}\n")
-            self.output.insert("end", "Pfad: " + " -> ".join(n.name for n in path) + "\n")
+            self.output.insert(
+                "end", "Pfad: " + " -> ".join(n.name for n in path) + "\n"
+            )
         except Exception as e:
             self.graph.draw(self.canvas)
             self.output.insert("end", f"Fehler: {e}\n")
@@ -244,6 +275,7 @@ class GraphApp(tk.Tk):
 # -----------------------------
 # Example Graph (gerichtet)
 # -----------------------------
+
 
 def build_example_graph() -> Graph:
     g = Graph()
