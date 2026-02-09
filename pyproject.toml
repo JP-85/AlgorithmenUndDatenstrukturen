@@ -8,6 +8,7 @@ dependencies = [
     "matplotlib",
     "pandas",
     "scikit-learn",
+    "pandas-stubs~=2.3.3",
 ]
 
 [dependency-groups]
