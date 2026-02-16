@@ -165,7 +165,7 @@ def plot_unit_circle(normalized_vectors: np.ndarray, names: np.ndarray):
 
     legend_handles = []
     for i, (vec, name, color) in enumerate(zip(normalized_vectors, names, colors)):
-        arrow = plt.arrow(
+        plt.arrow(
             0,
             0,
             vec[0],
@@ -181,8 +181,8 @@ def plot_unit_circle(normalized_vectors: np.ndarray, names: np.ndarray):
         )
 
         from matplotlib.patches import Patch
-        legend_handles.append(Patch(facecolor=color, edgecolor=color, label=name))
 
+        legend_handles.append(Patch(facecolor=color, edgecolor=color, label=name))
 
     lim = max_length * 1.3
     plt.xlim(-lim, lim)
@@ -192,13 +192,11 @@ def plot_unit_circle(normalized_vectors: np.ndarray, names: np.ndarray):
     plt.grid(True, alpha=0.2, linestyle="--")
     plt.xlabel("Säugetier", fontsize=13, weight="bold")
     plt.ylabel("Größe", fontsize=13, weight="bold")
-    plt.title(
-        "Vektoren der Tiere", fontsize=15, weight="bold", pad=20
-    )
+    plt.title("Vektoren der Tiere", fontsize=15, weight="bold", pad=20)
 
     plt.legend(
         handles=legend_handles,
-        loc='upper left',
+        loc="upper left",
         bbox_to_anchor=(1.02, 1),
         fontsize=10,
         framealpha=0.9,
