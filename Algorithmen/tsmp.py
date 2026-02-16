@@ -25,7 +25,7 @@ class City:
     def distance(self, city):
         xDis = abs(self.x - city.x)
         yDis = abs(self.y - city.y)
-        distance = np.sqrt((xDis ** 2) + (yDis ** 2))
+        distance = np.sqrt((xDis**2) + (yDis**2))
         return distance
 
     def __repr__(self):
@@ -43,7 +43,7 @@ class City:
 def createCities(n, shape=None):
     cityList = []
 
-    if shape == 'circle':
+    if shape == "circle":
         for i in range(n):
             theta = np.random.random() * 2 * np.pi
             x = 50 * np.cos(theta) + 50
@@ -61,7 +61,7 @@ def createCities(n, shape=None):
 # In[6]:
 
 
-cities = createCities(100, 'circle')
+cities = createCities(100, "circle")
 # print(cities)
 
 x = []
@@ -186,7 +186,7 @@ def rankRoutes(population):
 ranks = rankRoutes(pop)
 
 print(ranks.shape)
-print('Top five:')
+print("Top five:")
 print(ranks[:5])
 
 
@@ -199,8 +199,8 @@ print(ranks[:5])
 def selection(popRanked, eliteSize):
     selectionResults = []
     df = pd.DataFrame(np.flip(popRanked, axis=0), columns=["Index", "Fitness"])
-    df['cum_sum'] = df["Fitness"].cumsum()
-    df['cum_perc'] = 100 * df["cum_sum"] / df["Fitness"].sum()
+    df["cum_sum"] = df["Fitness"].cumsum()
+    df["cum_perc"] = 100 * df["cum_sum"] / df["Fitness"].sum()
 
     #     print(df.tail())
 
@@ -213,7 +213,7 @@ def selection(popRanked, eliteSize):
             if pick <= df.iat[i, 3]:
                 selectionResults.append(popRanked[i][0])
                 break
-    return np.array(selectionResults, dtype='int')
+    return np.array(selectionResults, dtype="int")
 
 
 # In[22]:
@@ -247,7 +247,7 @@ pop[3], selects[3]
 pool = matingPool(pop, selects)
 
 print(pool.shape)
-print(pool[: 2])
+print(pool[:2])
 
 
 # # Breed
@@ -319,7 +319,7 @@ print(breedPop[:3])
 
 def mutate(individual, mutationRate):
     for swapped in range(len(individual)):
-        if (np.random.random() < mutationRate):
+        if np.random.random() < mutationRate:
             swapWith = np.random.randint(len(individual))
 
             city1 = individual[swapped]
@@ -357,7 +357,7 @@ def mutatePopulation(population, mutationRate):
 mutants = mutatePopulation(breedPop, 0.01)
 
 print(mutants.shape)
-print(mutants[: 3])
+print(mutants[:3])
 
 
 # # Repeat with next Generation
@@ -414,11 +414,9 @@ def geneticAlgorithm(genes, popSize, eliteSize, mutationRate, generations):
 
 cityList = createCities(10)
 
-bestRoute, history = geneticAlgorithm(genes=cityList,
-                                      popSize=100,
-                                      eliteSize=20,
-                                      mutationRate=0.01,
-                                      generations=100)
+bestRoute, history = geneticAlgorithm(
+    genes=cityList, popSize=100, eliteSize=20, mutationRate=0.01, generations=100
+)
 
 # In[52]:
 
@@ -427,8 +425,8 @@ print(bestRoute)
 # print(history)
 
 plt.plot(np.arange(1, len(history) + 1), history)
-plt.ylabel('Distance')
-plt.xlabel('Generation')
+plt.ylabel("Distance")
+plt.xlabel("Generation")
 plt.show()
 
 # In[53]:
@@ -449,7 +447,7 @@ for city in bestRoute:
 x.append(bestRoute[0].x)
 y.append(bestRoute[0].y)
 
-plt.plot(x, y, color='r')
+plt.plot(x, y, color="r")
 plt.show()
 
 # In[ ]:
@@ -458,7 +456,7 @@ plt.show()
 # In[59]:
 
 
-cityList = createCities(10, 'circle')
+cityList = createCities(10, "circle")
 
 x = []
 y = []
@@ -468,11 +466,9 @@ for city in cityList:
 plt.scatter(x, y)
 plt.show()
 
-bestRoute, history = geneticAlgorithm(genes=cityList,
-                                      popSize=100,
-                                      eliteSize=20,
-                                      mutationRate=0.01,
-                                      generations=200)
+bestRoute, history = geneticAlgorithm(
+    genes=cityList, popSize=100, eliteSize=20, mutationRate=0.01, generations=200
+)
 
 # In[60]:
 
@@ -481,8 +477,8 @@ bestRoute, history = geneticAlgorithm(genes=cityList,
 # print(history)
 
 plt.plot(np.arange(1, len(history) + 1), history)
-plt.ylabel('Distance')
-plt.xlabel('Generation')
+plt.ylabel("Distance")
+plt.xlabel("Generation")
 plt.show()
 
 # In[61]:
@@ -503,7 +499,7 @@ for city in bestRoute:
 x.append(bestRoute[0].x)
 y.append(bestRoute[0].y)
 
-plt.plot(x, y, color='r')
+plt.plot(x, y, color="r")
 plt.show()
 
 # In[ ]:
