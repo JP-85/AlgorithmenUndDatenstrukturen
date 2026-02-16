@@ -137,7 +137,7 @@ def plot_unit_circle(normalized_vectors: np.ndarray, names: np.ndarray):
     Parameters
     ----------
     normalized_vectors : np.ndarray
-        NumPy array of unit vectors (shape: n x 2).
+        NumPy array of vectors (shape: n x 2).
     names : np.ndarray
         NumPy array of animal names corresponding to vectors.
 
@@ -148,21 +148,24 @@ def plot_unit_circle(normalized_vectors: np.ndarray, names: np.ndarray):
     """
     plt.figure(figsize=(12, 12))
 
-    theta = np.linspace(0, 2 * np.pi, 100)
-    plt.plot(
-        np.cos(theta),
-        np.sin(theta),
-        "k--",
-        alpha=0.3,
-        label="Einheitskreis",
-        linewidth=2,
-    )
+    max_length = np.max(np.linalg.norm(normalized_vectors, axis=1))
 
-    cmap = plt.colormaps["cividis"]
+    for radius in np.arange(1, max_length + 1, 1):
+        theta = np.linspace(0, 2 * np.pi, 100)
+        plt.plot(
+            radius * np.cos(theta),
+            radius * np.sin(theta),
+            "k--",
+            alpha=0.15,
+            linewidth=1,
+        )
+
+    cmap = plt.colormaps["tab20c"]
     colors = cmap(np.linspace(0.1, 0.9, len(names)))
 
+    legend_handles = []
     for i, (vec, name, color) in enumerate(zip(normalized_vectors, names, colors)):
-        plt.arrow(
+        arrow = plt.arrow(
             0,
             0,
             vec[0],
@@ -174,44 +177,35 @@ def plot_unit_circle(normalized_vectors: np.ndarray, names: np.ndarray):
             alpha=0.8,
             length_includes_head=True,
             linewidth=2.5,
+            label=name,
         )
 
-        shaft_position = 0.6
-        text_x = vec[0] * shaft_position
-        text_y = vec[1] * shaft_position
+        from matplotlib.patches import Patch
+        legend_handles.append(Patch(facecolor=color, edgecolor=color, label=name))
 
-        angle_rad = np.arctan2(vec[1], vec[0])
-        angle_deg = np.degrees(angle_rad)
 
-        if angle_deg > 90 or angle_deg < -90:
-            angle_deg += 180
-
-        plt.text(
-            text_x,
-            text_y,
-            name,
-            fontsize=10,
-            ha="center",
-            va="center",
-            rotation=angle_deg,
-            rotation_mode="anchor",
-            color="white",
-            weight="bold",
-            bbox=dict(
-                boxstyle="round,pad=0.4", facecolor=color, edgecolor="none", alpha=0.9
-            ),
-        )
-
-    plt.xlim(-1.4, 1.4)
-    plt.ylim(-1.4, 1.4)
+    lim = max_length * 1.3
+    plt.xlim(-lim, lim)
+    plt.ylim(-lim, lim)
     plt.axhline(y=0, color="k", linestyle="-", alpha=0.3, linewidth=1)
     plt.axvline(x=0, color="k", linestyle="-", alpha=0.3, linewidth=1)
     plt.grid(True, alpha=0.2, linestyle="--")
-    plt.xlabel("Merkmal 1 (Säugetier)", fontsize=13, weight="bold")
-    plt.ylabel("Merkmal 2 (Größe)", fontsize=13, weight="bold")
+    plt.xlabel("Säugetier", fontsize=13, weight="bold")
+    plt.ylabel("Größe", fontsize=13, weight="bold")
     plt.title(
-        "Einheitsvektoren der Tiere (zero mean)", fontsize=15, weight="bold", pad=20
+        "Vektoren der Tiere", fontsize=15, weight="bold", pad=20
     )
+
+    plt.legend(
+        handles=legend_handles,
+        loc='upper left',
+        bbox_to_anchor=(1.02, 1),
+        fontsize=10,
+        framealpha=0.9,
+        title="Tiere",
+        title_fontsize=11,
+    )
+
     plt.axis("equal")
     plt.tight_layout()
     plt.savefig("animal_vectors.png", dpi=300, bbox_inches="tight")
@@ -369,8 +363,8 @@ def main() -> None:
     print("-" * 80)
     normalized, centered, means = normalize_vectors(vectors)
     print(f"  Mittelwerte: Säugetier={means[0]:.3f}, Größe={means[1]:.3f}")
-    print("\n  Einheitsvektoren:")
-    for name, vec in zip(names, normalized):
+    print("\n  Zentrierte Vektoren (zero mean):")
+    for name, vec in zip(names, centered):
         length = np.linalg.norm(vec)
         print(f"  {name:15} → [{vec[0]:7.4f}, {vec[1]:7.4f}]  (Länge: {length:.4f})")
 
@@ -384,7 +378,7 @@ def main() -> None:
     print(f"Analogie gefunden: Maus : Elefant = Clownfisch : {result}")
     print("=" * 80)
 
-    plot_unit_circle(normalized, names)
+    plot_unit_circle(centered, names)
 
 
 if __name__ == "__main__":
