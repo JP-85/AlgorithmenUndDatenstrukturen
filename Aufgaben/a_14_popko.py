@@ -69,14 +69,13 @@ def normalize_vectors(vectors: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.n
     means : np.ndarray
         Mean values of original vectors (shape: 2).
     """
-    #
+    # Mittelwert berechnen
     means = np.mean(vectors, axis=0)
     # Mittelwert + Zentrieren
     centered = vectors - means
 
-    # Normalisieren
+    # Standardisieren: Alle Vektoren auf Länge 1 normieren
     norms = np.linalg.norm(centered, axis=1, keepdims=True)
-    # Teilung durch 0 verhindern
     norms = np.where(norms == 0, 1, norms)
     normalized = centered / norms
 
@@ -130,7 +129,7 @@ def find_analogy(
     return names[best_idx]
 
 
-def plot_unit_circle(normalized_vectors: np.ndarray, names: np.ndarray):
+def plot_unit_circle(normalized_vectors: np.ndarray, names: np.ndarray, save_file: str):
     """
     Plot normalized vectors on unit circle.
 
@@ -206,7 +205,7 @@ def plot_unit_circle(normalized_vectors: np.ndarray, names: np.ndarray):
 
     plt.axis("equal")
     plt.tight_layout()
-    plt.savefig("animal_vectors.png", dpi=300, bbox_inches="tight")
+    plt.savefig(f"{save_file}.png", dpi=300, bbox_inches="tight")
     plt.show()
 
 
@@ -376,7 +375,13 @@ def main() -> None:
     print(f"Analogie gefunden: Maus : Elefant = Clownfisch : {result}")
     print("=" * 80)
 
-    plot_unit_circle(centered, names)
+    plot_unit_circle(centered, names, "animal_vectors")
+
+    for name, vec in zip(names, normalized):
+        length = np.linalg.norm(vec)
+        print(f"  {name:15} → [{vec[0]:7.4f}, {vec[1]:7.4f}]  (Länge: {length:.4f})")
+
+    plot_unit_circle(normalized, names, "animal_vectors_normalized")
 
 
 if __name__ == "__main__":

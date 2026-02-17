@@ -9,7 +9,6 @@ dependencies = [
     "pandas",
     "scikit-learn",
     "pandas-stubs~=2.3.3",
-    "nltk>=3.9.2",
 ]
 
 [dependency-groups]
